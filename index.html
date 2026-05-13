@@ -178,7 +178,7 @@ header p {
   box-shadow:
     0 0 0 1px rgba(255,255,255,0.03),
     0 24px 60px rgba(0,0,0,0.5);
-  animation: cardIn 0.4s cubic-bezier(0.34,1.56,0.64,1) both;
+  animation: cardIn 0.35s ease both;
 }
 
 @keyframes cardIn {
@@ -259,6 +259,7 @@ header p {
   background: linear-gradient(90deg, rgba(240,192,64,0.06), transparent);
   opacity: 0;
   transition: opacity 0.2s;
+  pointer-events: none;
 }
 
 .opt-btn:hover {
@@ -1158,7 +1159,7 @@ function renderQuestion(node) {
   const opts = document.createElement('div');
   opts.className = 'q-options';
 
-  node.options.forEach(opt => {
+  node.options.forEach((opt, idx) => {
     const btn = document.createElement('button');
     btn.className = 'opt-btn';
     btn.innerHTML = `
@@ -1169,7 +1170,7 @@ function renderQuestion(node) {
       </span>
       <span class="opt-arrow">›</span>
     `;
-    btn.addEventListener('click', () => choose(opt));
+    btn.onclick = function() { choose(opt); };
     opts.appendChild(btn);
   });
 
@@ -1195,6 +1196,9 @@ function choose(opt) {
   } else if (opt.next) {
     currentNode = opt.next;
     renderQuestion(currentNode);
+  } else {
+    // fallback — should never happen
+    renderResult('uzbekistan_silk');
   }
 }
 
