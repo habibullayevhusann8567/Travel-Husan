@@ -3,865 +3,1285 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Sayohat AI — Sizning Shaxsiy Sayohat Yo'lboshchingiz</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<title>Sayohat AI — Qaerga Boring?</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --sand: #F5EDD6;
-    --terracotta: #C0622F;
-    --deep: #1A1208;
-    --gold: #D4A843;
-    --sky: #3A6B8A;
-    --mist: #E8E0D0;
-    --ink: #2C1E0F;
-  }
-
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-
-  body {
-    background: var(--sand);
-    color: var(--ink);
-    font-family: 'DM Sans', sans-serif;
-    min-height: 100vh;
-    overflow-x: hidden;
-  }
-
-  /* Background texture */
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background-image:
-      radial-gradient(ellipse at 20% 20%, rgba(192,98,47,0.08) 0%, transparent 50%),
-      radial-gradient(ellipse at 80% 80%, rgba(58,107,138,0.08) 0%, transparent 50%),
-      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60'%3E%3Ccircle cx='30' cy='30' r='0.8' fill='%23C0622F' opacity='0.12'/%3E%3C/svg%3E");
-    pointer-events: none;
-    z-index: 0;
-  }
-
-  /* ===== HEADER ===== */
-  header {
-    position: relative;
-    z-index: 10;
-    padding: 48px 40px 0;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-
-  .logo {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.6rem;
-    color: var(--terracotta);
-    letter-spacing: -0.5px;
-  }
-
-  .logo span {
-    color: var(--sky);
-    font-style: italic;
-  }
-
-  /* ===== HERO ===== */
-  .hero {
-    position: relative;
-    z-index: 10;
-    text-align: center;
-    padding: 64px 24px 48px;
-  }
-
-  .hero-badge {
-    display: inline-block;
-    background: var(--terracotta);
-    color: #fff;
-    font-size: 0.72rem;
-    font-weight: 500;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    padding: 6px 16px;
-    border-radius: 100px;
-    margin-bottom: 24px;
-    animation: fadeDown 0.6s ease both;
-  }
-
-  .hero h1 {
-    font-family: 'Playfair Display', serif;
-    font-size: clamp(2.4rem, 6vw, 4.2rem);
-    line-height: 1.1;
-    color: var(--deep);
-    max-width: 700px;
-    margin: 0 auto 20px;
-    animation: fadeDown 0.6s 0.1s ease both;
-  }
-
-  .hero h1 em {
-    color: var(--terracotta);
-    font-style: italic;
-  }
-
-  .hero p {
-    font-size: 1.05rem;
-    color: #6B5A45;
-    max-width: 460px;
-    margin: 0 auto;
-    line-height: 1.7;
-    animation: fadeDown 0.6s 0.2s ease both;
-  }
-
-  /* ===== MAIN CARD ===== */
-  .card-wrapper {
-    position: relative;
-    z-index: 10;
-    max-width: 780px;
-    margin: 0 auto;
-    padding: 0 20px 80px;
-    animation: fadeUp 0.7s 0.3s ease both;
-  }
-
-  .card {
-    background: #fff;
-    border-radius: 24px;
-    overflow: hidden;
-    box-shadow:
-      0 4px 6px rgba(26,18,8,0.04),
-      0 20px 60px rgba(26,18,8,0.10),
-      0 0 0 1px rgba(192,98,47,0.1);
-  }
-
-  /* ===== STEPS ===== */
-  .step {
-    display: none;
-    padding: 48px 44px;
-    animation: slideIn 0.4s ease both;
-  }
-
-  .step.active { display: block; }
-
-  @keyframes slideIn {
-    from { opacity: 0; transform: translateX(20px); }
-    to   { opacity: 1; transform: translateX(0); }
-  }
-
-  .step-label {
-    font-size: 0.72rem;
-    font-weight: 500;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: var(--terracotta);
-    margin-bottom: 10px;
-  }
-
-  .step h2 {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.75rem;
-    color: var(--deep);
-    margin-bottom: 8px;
-    line-height: 1.25;
-  }
-
-  .step .subtitle {
-    font-size: 0.92rem;
-    color: #8A7660;
-    margin-bottom: 32px;
-  }
-
-  /* ===== OPTIONS GRID ===== */
-  .options-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-    gap: 12px;
-    margin-bottom: 32px;
-  }
-
-  .option-btn {
-    background: var(--mist);
-    border: 2px solid transparent;
-    border-radius: 14px;
-    padding: 16px 12px;
-    cursor: pointer;
-    text-align: center;
-    transition: all 0.2s;
-    font-family: 'DM Sans', sans-serif;
-  }
-
-  .option-btn:hover {
-    border-color: var(--terracotta);
-    background: rgba(192,98,47,0.06);
-    transform: translateY(-2px);
-  }
-
-  .option-btn.selected {
-    background: var(--terracotta);
-    border-color: var(--terracotta);
-    color: #fff;
-  }
-
-  .option-btn .icon {
-    font-size: 2rem;
-    display: block;
-    margin-bottom: 8px;
-  }
-
-  .option-btn .label {
-    font-size: 0.82rem;
-    font-weight: 500;
-    display: block;
-    color: inherit;
-  }
-
-  /* ===== SLIDER ===== */
-  .slider-wrap {
-    margin-bottom: 32px;
-  }
-
-  .slider-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 14px;
-  }
-
-  .slider-header span {
-    font-size: 0.85rem;
-    color: #8A7660;
-  }
-
-  .slider-value {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.3rem;
-    color: var(--terracotta);
-    font-weight: 700;
-  }
-
-  input[type=range] {
-    -webkit-appearance: none;
-    width: 100%;
-    height: 6px;
-    background: var(--mist);
-    border-radius: 3px;
-    outline: none;
-  }
-
-  input[type=range]::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    width: 22px;
-    height: 22px;
-    border-radius: 50%;
-    background: var(--terracotta);
-    cursor: pointer;
-    box-shadow: 0 2px 8px rgba(192,98,47,0.4);
-  }
-
-  /* ===== NAV BUTTONS ===== */
-  .btn-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 12px;
-  }
-
-  .btn-back {
-    background: none;
-    border: 2px solid var(--mist);
-    color: #8A7660;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.9rem;
-    padding: 12px 24px;
-    border-radius: 100px;
-    cursor: pointer;
-    transition: all 0.2s;
-  }
-
-  .btn-back:hover {
-    border-color: var(--ink);
-    color: var(--ink);
-  }
-
-  .btn-next {
-    background: var(--terracotta);
-    color: #fff;
-    border: none;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.95rem;
-    font-weight: 500;
-    padding: 14px 32px;
-    border-radius: 100px;
-    cursor: pointer;
-    transition: all 0.2s;
-    flex: 1;
-    max-width: 260px;
-    margin-left: auto;
-  }
-
-  .btn-next:hover {
-    background: #A8511F;
-    transform: translateY(-1px);
-    box-shadow: 0 6px 20px rgba(192,98,47,0.35);
-  }
-
-  .btn-next:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-    transform: none;
-  }
-
-  /* ===== PROGRESS BAR ===== */
-  .progress-bar {
-    height: 4px;
-    background: var(--mist);
-  }
-
-  .progress-fill {
-    height: 100%;
-    background: linear-gradient(90deg, var(--terracotta), var(--gold));
-    transition: width 0.4s ease;
-  }
-
-  /* ===== LOADING ===== */
-  #step-loading {
-    padding: 60px 44px;
-    text-align: center;
-  }
-
-  .compass {
-    width: 72px;
-    height: 72px;
-    border: 4px solid var(--mist);
-    border-top-color: var(--terracotta);
-    border-radius: 50%;
-    margin: 0 auto 28px;
-    animation: spin 1s linear infinite;
-  }
-
-  @keyframes spin { to { transform: rotate(360deg); } }
-
-  .loading-msg {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.3rem;
-    color: var(--deep);
-    margin-bottom: 10px;
-  }
-
-  .loading-sub {
-    font-size: 0.88rem;
-    color: #8A7660;
-  }
-
-  /* ===== RESULTS ===== */
-  #step-result {
-    padding: 44px;
-  }
-
-  .result-header {
-    margin-bottom: 32px;
-  }
-
-  .result-header .step-label { margin-bottom: 8px; }
-
-  .result-header h2 {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.7rem;
-    color: var(--deep);
-    line-height: 1.2;
-  }
-
-  /* Destination cards */
-  .dest-list {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-    margin-bottom: 32px;
-  }
-
-  .dest-card {
-    border: 2px solid var(--mist);
-    border-radius: 16px;
-    padding: 20px 22px;
-    display: flex;
-    gap: 18px;
-    align-items: flex-start;
-    transition: border-color 0.2s, box-shadow 0.2s;
-    opacity: 0;
-    transform: translateY(12px);
-    animation: cardIn 0.4s ease forwards;
-  }
-
-  .dest-card:hover {
-    border-color: var(--terracotta);
-    box-shadow: 0 4px 20px rgba(192,98,47,0.1);
-  }
-
-  @keyframes cardIn {
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  .dest-card:nth-child(1) { animation-delay: 0.1s; }
-  .dest-card:nth-child(2) { animation-delay: 0.2s; }
-  .dest-card:nth-child(3) { animation-delay: 0.3s; }
-
-  .dest-rank {
-    width: 36px;
-    height: 36px;
-    background: var(--terracotta);
-    color: #fff;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: 'Playfair Display', serif;
-    font-size: 1rem;
-    font-weight: 700;
-    flex-shrink: 0;
-  }
-
-  .dest-card:nth-child(2) .dest-rank { background: var(--sky); }
-  .dest-card:nth-child(3) .dest-rank { background: var(--gold); }
-
-  .dest-info h3 {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.15rem;
-    color: var(--deep);
-    margin-bottom: 6px;
-  }
-
-  .dest-info p {
-    font-size: 0.86rem;
-    color: #7A6652;
-    line-height: 1.6;
-  }
-
-  .dest-tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-    margin-top: 10px;
-  }
-
-  .dest-tag {
-    background: var(--mist);
-    color: #6B5A45;
-    font-size: 0.74rem;
-    padding: 3px 10px;
-    border-radius: 100px;
-    font-weight: 500;
-  }
-
-  /* AI advice section */
-  .ai-advice {
-    background: linear-gradient(135deg, rgba(58,107,138,0.06), rgba(192,98,47,0.06));
-    border: 1px solid rgba(192,98,47,0.15);
-    border-radius: 16px;
-    padding: 20px 22px;
-    margin-bottom: 28px;
-    font-size: 0.9rem;
-    color: var(--ink);
-    line-height: 1.7;
-    opacity: 0;
-    animation: cardIn 0.4s 0.5s ease forwards;
-  }
-
-  .ai-advice strong {
-    color: var(--terracotta);
-    font-weight: 600;
-  }
-
-  .btn-restart {
-    background: none;
-    border: 2px solid var(--terracotta);
-    color: var(--terracotta);
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.9rem;
-    font-weight: 500;
-    padding: 12px 28px;
-    border-radius: 100px;
-    cursor: pointer;
-    transition: all 0.2s;
-    width: 100%;
-  }
-
-  .btn-restart:hover {
-    background: var(--terracotta);
-    color: #fff;
-  }
-
-  /* ===== ERROR ===== */
-  .error-box {
-    background: #FEF2F0;
-    border: 1px solid rgba(192,98,47,0.3);
-    border-radius: 12px;
-    padding: 16px 18px;
-    font-size: 0.88rem;
-    color: #8B3A1A;
-    margin-bottom: 20px;
-    display: none;
-  }
-
-  /* ===== ANIMATIONS ===== */
-  @keyframes fadeDown {
-    from { opacity: 0; transform: translateY(-16px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(20px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
-
-  /* ===== RESPONSIVE ===== */
-  @media (max-width: 600px) {
-    .step { padding: 32px 22px; }
-    #step-result { padding: 28px 20px; }
-    .options-grid { grid-template-columns: repeat(3, 1fr); gap: 8px; }
-    .btn-row { flex-direction: column-reverse; }
-    .btn-next { max-width: 100%; width: 100%; }
-    .btn-back { width: 100%; text-align: center; }
-  }
+:root {
+  --bg: #0D1117;
+  --surface: #161B22;
+  --card: #1C2230;
+  --border: rgba(255,255,255,0.08);
+  --gold: #F0C040;
+  --gold2: #E8A020;
+  --teal: #4ECDC4;
+  --rose: #FF6B6B;
+  --sky: #74B9FF;
+  --text: #E8DCC8;
+  --muted: #8892A4;
+  --white: #F5F0E8;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Outfit', sans-serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* Stars background */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    radial-gradient(1px 1px at 10% 15%, rgba(240,192,64,0.6) 0%, transparent 100%),
+    radial-gradient(1px 1px at 25% 40%, rgba(255,255,255,0.4) 0%, transparent 100%),
+    radial-gradient(1px 1px at 40% 10%, rgba(116,185,255,0.5) 0%, transparent 100%),
+    radial-gradient(1px 1px at 60% 60%, rgba(255,255,255,0.3) 0%, transparent 100%),
+    radial-gradient(1px 1px at 75% 25%, rgba(240,192,64,0.4) 0%, transparent 100%),
+    radial-gradient(1px 1px at 85% 70%, rgba(255,255,255,0.5) 0%, transparent 100%),
+    radial-gradient(1px 1px at 92% 45%, rgba(116,185,255,0.4) 0%, transparent 100%),
+    radial-gradient(1px 1px at 15% 80%, rgba(255,255,255,0.3) 0%, transparent 100%),
+    radial-gradient(1px 1px at 50% 85%, rgba(240,192,64,0.3) 0%, transparent 100%),
+    radial-gradient(2px 2px at 35% 55%, rgba(255,255,255,0.2) 0%, transparent 100%),
+    radial-gradient(1px 1px at 68% 12%, rgba(255,255,255,0.4) 0%, transparent 100%),
+    radial-gradient(1px 1px at 5%  50%, rgba(116,185,255,0.3) 0%, transparent 100%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Glow blobs */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 600px 400px at 20% 30%, rgba(240,192,64,0.05) 0%, transparent 70%),
+    radial-gradient(ellipse 500px 300px at 80% 70%, rgba(78,205,196,0.05) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ===== LAYOUT ===== */
+.container {
+  position: relative;
+  z-index: 1;
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 0 20px 80px;
+}
+
+/* ===== HEADER ===== */
+header {
+  text-align: center;
+  padding: 56px 0 40px;
+}
+
+.logo-icon {
+  font-size: 2.8rem;
+  display: block;
+  margin-bottom: 16px;
+  animation: float 4s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%,100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+header h1 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(2.2rem, 6vw, 3.2rem);
+  font-weight: 700;
+  color: var(--white);
+  line-height: 1.1;
+  margin-bottom: 12px;
+}
+
+header h1 em {
+  color: var(--gold);
+  font-style: italic;
+}
+
+header p {
+  font-size: 0.95rem;
+  color: var(--muted);
+  font-weight: 300;
+}
+
+/* ===== PROGRESS ===== */
+.progress-track {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 32px;
+  padding: 0 4px;
+}
+
+.progress-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--border);
+  border: 1px solid rgba(255,255,255,0.15);
+  transition: all 0.3s;
+  flex-shrink: 0;
+}
+
+.progress-dot.done {
+  background: var(--gold);
+  border-color: var(--gold);
+  box-shadow: 0 0 8px rgba(240,192,64,0.5);
+}
+
+.progress-dot.active {
+  background: transparent;
+  border-color: var(--gold);
+  box-shadow: 0 0 10px rgba(240,192,64,0.4);
+  animation: pulse-dot 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse-dot {
+  0%,100% { box-shadow: 0 0 6px rgba(240,192,64,0.4); }
+  50% { box-shadow: 0 0 14px rgba(240,192,64,0.8); }
+}
+
+.progress-line {
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+  position: relative;
+  overflow: hidden;
+}
+
+.progress-line::after {
+  content: '';
+  position: absolute;
+  left: 0; top: 0;
+  height: 100%;
+  background: var(--gold);
+  width: 0%;
+  transition: width 0.5s ease;
+}
+
+.progress-line.filled::after { width: 100%; }
+
+/* ===== QUESTION CARD ===== */
+.q-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow:
+    0 0 0 1px rgba(255,255,255,0.03),
+    0 24px 60px rgba(0,0,0,0.5);
+  animation: cardIn 0.4s cubic-bezier(0.34,1.56,0.64,1) both;
+}
+
+@keyframes cardIn {
+  from { opacity:0; transform: scale(0.94) translateY(16px); }
+  to   { opacity:1; transform: scale(1) translateY(0); }
+}
+
+.q-header {
+  padding: 28px 32px 24px;
+  border-bottom: 1px solid var(--border);
+  background: linear-gradient(135deg, rgba(240,192,64,0.04), rgba(78,205,196,0.04));
+}
+
+.q-step-label {
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.q-step-label::before {
+  content: '';
+  width: 20px;
+  height: 1px;
+  background: var(--gold);
+}
+
+.q-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.65rem;
+  font-weight: 600;
+  color: var(--white);
+  line-height: 1.25;
+}
+
+.q-sub {
+  margin-top: 6px;
+  font-size: 0.84rem;
+  color: var(--muted);
+  font-weight: 300;
+}
+
+/* ===== OPTIONS ===== */
+.q-options {
+  padding: 24px 32px 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.opt-btn {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px 20px;
+  cursor: pointer;
+  text-align: left;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  transition: all 0.2s;
+  font-family: 'Outfit', sans-serif;
+  color: var(--text);
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+.opt-btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(240,192,64,0.06), transparent);
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.opt-btn:hover {
+  border-color: rgba(240,192,64,0.4);
+  transform: translateX(4px);
+  background: rgba(240,192,64,0.04);
+}
+
+.opt-btn:hover::before { opacity: 1; }
+
+.opt-btn:active { transform: translateX(2px) scale(0.99); }
+
+.opt-icon {
+  font-size: 1.6rem;
+  flex-shrink: 0;
+  width: 36px;
+  text-align: center;
+}
+
+.opt-text { flex: 1; }
+
+.opt-label {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--white);
+  display: block;
+  margin-bottom: 2px;
+}
+
+.opt-desc {
+  font-size: 0.78rem;
+  color: var(--muted);
+  font-weight: 300;
+  display: block;
+}
+
+.opt-arrow {
+  color: var(--muted);
+  font-size: 0.9rem;
+  transition: transform 0.2s, color 0.2s;
+}
+
+.opt-btn:hover .opt-arrow {
+  transform: translateX(4px);
+  color: var(--gold);
+}
+
+/* Back button */
+.q-footer {
+  padding: 0 32px 28px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.btn-back {
+  background: none;
+  border: 1px solid var(--border);
+  color: var(--muted);
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.82rem;
+  padding: 8px 16px;
+  border-radius: 100px;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.btn-back:hover {
+  border-color: var(--muted);
+  color: var(--white);
+}
+
+.q-path {
+  font-size: 0.72rem;
+  color: rgba(255,255,255,0.2);
+  flex: 1;
+  text-align: right;
+  font-style: italic;
+}
+
+/* ===== RESULT CARD ===== */
+.result-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 24px 60px rgba(0,0,0,0.5);
+  animation: cardIn 0.5s cubic-bezier(0.34,1.56,0.64,1) both;
+}
+
+.result-hero {
+  padding: 36px 32px 28px;
+  background: linear-gradient(135deg,
+    rgba(240,192,64,0.08) 0%,
+    rgba(78,205,196,0.05) 50%,
+    rgba(116,185,255,0.05) 100%);
+  border-bottom: 1px solid var(--border);
+  text-align: center;
+}
+
+.result-badge {
+  display: inline-block;
+  background: rgba(240,192,64,0.12);
+  border: 1px solid rgba(240,192,64,0.3);
+  color: var(--gold);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  padding: 5px 14px;
+  border-radius: 100px;
+  margin-bottom: 18px;
+}
+
+.result-emoji {
+  font-size: 4rem;
+  display: block;
+  margin-bottom: 14px;
+  animation: float 3s ease-in-out infinite;
+}
+
+.result-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: var(--white);
+  margin-bottom: 6px;
+  line-height: 1.1;
+}
+
+.result-subtitle {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.1rem;
+  font-style: italic;
+  color: var(--gold);
+  margin-bottom: 12px;
+}
+
+.result-desc {
+  font-size: 0.9rem;
+  color: var(--muted);
+  line-height: 1.7;
+  max-width: 480px;
+  margin: 0 auto;
+  font-weight: 300;
+}
+
+/* Info grid */
+.result-grid {
+  padding: 24px 32px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  border-bottom: 1px solid var(--border);
+}
+
+.info-item {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 14px 16px;
+  opacity: 0;
+  transform: translateY(10px);
+  animation: itemIn 0.4s ease forwards;
+}
+
+.info-item:nth-child(1) { animation-delay: 0.1s; }
+.info-item:nth-child(2) { animation-delay: 0.2s; }
+.info-item:nth-child(3) { animation-delay: 0.3s; }
+.info-item:nth-child(4) { animation-delay: 0.4s; }
+
+@keyframes itemIn {
+  to { opacity:1; transform: translateY(0); }
+}
+
+.info-icon { font-size: 1.2rem; margin-bottom: 6px; display: block; }
+.info-label { font-size: 0.7rem; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; font-weight: 500; margin-bottom: 3px; display: block; }
+.info-value { font-size: 0.9rem; color: var(--white); font-weight: 500; }
+
+/* Tips */
+.result-tips {
+  padding: 24px 32px;
+  border-bottom: 1px solid var(--border);
+}
+
+.tips-title {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--teal);
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.tips-title::before { content:''; width:16px; height:1px; background: var(--teal); }
+
+.tip-item {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 10px;
+  font-size: 0.86rem;
+  color: var(--text);
+  line-height: 1.5;
+  font-weight: 300;
+  opacity: 0;
+  animation: itemIn 0.4s ease forwards;
+}
+
+.tip-item:nth-child(2) { animation-delay: 0.5s; }
+.tip-item:nth-child(3) { animation-delay: 0.6s; }
+.tip-item:nth-child(4) { animation-delay: 0.7s; }
+
+.tip-dot {
+  width: 6px;
+  height: 6px;
+  background: var(--teal);
+  border-radius: 50%;
+  flex-shrink: 0;
+  margin-top: 7px;
+}
+
+/* Alternatives */
+.result-alts {
+  padding: 20px 32px 28px;
+}
+
+.alts-title {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--sky);
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.alts-title::before { content:''; width:16px; height:1px; background: var(--sky); }
+
+.alts-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 28px;
+}
+
+.alt-chip {
+  background: rgba(116,185,255,0.08);
+  border: 1px solid rgba(116,185,255,0.2);
+  color: var(--sky);
+  font-size: 0.82rem;
+  padding: 6px 14px;
+  border-radius: 100px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.alt-chip:hover {
+  background: rgba(116,185,255,0.15);
+  transform: translateY(-2px);
+}
+
+.btn-restart {
+  width: 100%;
+  background: linear-gradient(135deg, var(--gold), var(--gold2));
+  color: #1A1000;
+  border: none;
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 600;
+  padding: 16px;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+  letter-spacing: 0.5px;
+}
+
+.btn-restart:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(240,192,64,0.35);
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 500px) {
+  .q-header, .q-options { padding-left: 20px; padding-right: 20px; }
+  .q-footer { padding: 0 20px 24px; }
+  .result-grid { grid-template-columns: 1fr 1fr; }
+  .result-hero, .result-grid, .result-tips, .result-alts { padding-left: 20px; padding-right: 20px; }
+}
 </style>
 </head>
 <body>
 
-<header>
-  <div class="logo">Sayohat <span>AI</span></div>
-</header>
+<div class="container">
+  <header>
+    <span class="logo-icon">✈️</span>
+    <h1>Qaerga <em>boring?</em></h1>
+    <p>Bir necha savolga javob bering — sizga mos joy topamiz</p>
+  </header>
 
-<section class="hero">
-  <div class="hero-badge">✦ Sun'iy Intellekt bilan</div>
-  <h1>Sizga mos <em>sayohat</em><br>joyini topamiz</h1>
-  <p>Bir necha savolga javob bering — AI sizning orzularingizga mos eng yaxshi destinatsiyalarni tavsiya qilsin.</p>
-</section>
+  <div class="progress-track" id="progressTrack"></div>
 
-<div class="card-wrapper">
-  <div class="card">
-    <div class="progress-bar">
-      <div class="progress-fill" id="progressFill" style="width: 20%"></div>
-    </div>
-
-    <!-- STEP 1: Qiziqishlar -->
-    <div class="step active" id="step-1">
-      <div class="step-label">Qadam 1 / 4</div>
-      <h2>Sayohatda nima qilishni yoqtirасиз?</h2>
-      <p class="subtitle">Bir yoki bir nechtasini tanlang</p>
-      <div class="options-grid" id="interests-grid">
-        <button class="option-btn" data-val="beaches">
-          <span class="icon">🏖️</span><span class="label">Plyajlar</span>
-        </button>
-        <button class="option-btn" data-val="mountains">
-          <span class="icon">🏔️</span><span class="label">Tog'lar</span>
-        </button>
-        <button class="option-btn" data-val="history">
-          <span class="icon">🏛️</span><span class="label">Tarix</span>
-        </button>
-        <button class="option-btn" data-val="nature">
-          <span class="icon">🌿</span><span class="label">Tabiat</span>
-        </button>
-        <button class="option-btn" data-val="food">
-          <span class="icon">🍜</span><span class="label">Taom</span>
-        </button>
-        <button class="option-btn" data-val="shopping">
-          <span class="icon">🛍️</span><span class="label">Xarid</span>
-        </button>
-        <button class="option-btn" data-val="adventure">
-          <span class="icon">🧗</span><span class="label">Sarguzasht</span>
-        </button>
-        <button class="option-btn" data-val="culture">
-          <span class="icon">🎭</span><span class="label">Madaniyat</span>
-        </button>
-        <button class="option-btn" data-val="relax">
-          <span class="icon">🧘</span><span class="label">Dam olish</span>
-        </button>
-      </div>
-      <div class="btn-row">
-        <button class="btn-next" id="next1" onclick="goStep(2)" disabled>Davom etish →</button>
-      </div>
-    </div>
-
-    <!-- STEP 2: Iqlim -->
-    <div class="step" id="step-2">
-      <div class="step-label">Qadam 2 / 4</div>
-      <h2>Qaysi iqlimni afzal ko'rasiz?</h2>
-      <p class="subtitle">Bitta tanlang</p>
-      <div class="options-grid" id="climate-grid">
-        <button class="option-btn" data-val="tropical">
-          <span class="icon">☀️</span><span class="label">Issiq & Nam</span>
-        </button>
-        <button class="option-btn" data-val="mediterranean">
-          <span class="icon">🌤️</span><span class="label">Iliq & Quruq</span>
-        </button>
-        <button class="option-btn" data-val="cold">
-          <span class="icon">❄️</span><span class="label">Sovuq & Qorli</span>
-        </button>
-        <button class="option-btn" data-val="mild">
-          <span class="icon">🌈</span><span class="label">Mo'tadil</span>
-        </button>
-        <button class="option-btn" data-val="desert">
-          <span class="icon">🏜️</span><span class="label">Cho'l</span>
-        </button>
-        <button class="option-btn" data-val="any">
-          <span class="icon">🌍</span><span class="label">Farq qilmaydi</span>
-        </button>
-      </div>
-      <div class="btn-row">
-        <button class="btn-back" onclick="goStep(1)">← Orqaga</button>
-        <button class="btn-next" id="next2" onclick="goStep(3)" disabled>Davom etish →</button>
-      </div>
-    </div>
-
-    <!-- STEP 3: Budjet -->
-    <div class="step" id="step-3">
-      <div class="step-label">Qadam 3 / 4</div>
-      <h2>Taxminiy byudjet necha dollar?</h2>
-      <p class="subtitle">Bir kishi uchun taxminiy xarajat (dollar)</p>
-      <div class="slider-wrap">
-        <div class="slider-header">
-          <span>$200</span>
-          <span class="slider-value" id="budgetDisplay">$1,500</span>
-          <span>$10,000+</span>
-        </div>
-        <input type="range" id="budgetSlider" min="200" max="10000" step="100" value="1500"
-          oninput="updateBudget(this.value)">
-      </div>
-      <div class="btn-row">
-        <button class="btn-back" onclick="goStep(2)">← Orqaga</button>
-        <button class="btn-next" onclick="goStep(4)">Davom etish →</button>
-      </div>
-    </div>
-
-    <!-- STEP 4: Muddат -->
-    <div class="step" id="step-4">
-      <div class="step-label">Qadam 4 / 4</div>
-      <h2>Sayohat qancha davom etadi?</h2>
-      <p class="subtitle">Bitta tanlang</p>
-      <div class="options-grid" id="duration-grid">
-        <button class="option-btn" data-val="weekend">
-          <span class="icon">🌙</span><span class="label">2–3 kun</span>
-        </button>
-        <button class="option-btn" data-val="week">
-          <span class="icon">📅</span><span class="label">1 hafta</span>
-        </button>
-        <button class="option-btn" data-val="twoweeks">
-          <span class="icon">🗓️</span><span class="label">2 hafta</span>
-        </button>
-        <button class="option-btn" data-val="month">
-          <span class="icon">🌏</span><span class="label">1 oy+</span>
-        </button>
-      </div>
-      <div class="error-box" id="errorBox"></div>
-      <div class="btn-row">
-        <button class="btn-back" onclick="goStep(3)">← Orqaga</button>
-        <button class="btn-next" id="next4" onclick="getRecommendations()" disabled>🔍 Tavsiya ol</button>
-      </div>
-    </div>
-
-    <!-- LOADING -->
-    <div class="step" id="step-loading">
-      <div class="compass"></div>
-      <div class="loading-msg">AI sizning sayohatingizni rejalashtirmoqda...</div>
-      <div class="loading-sub">Butun dunyo bo'ylab eng mos joylarni qidirmoqdamiz</div>
-    </div>
-
-    <!-- RESULT -->
-    <div class="step" id="step-result">
-      <div class="result-header">
-        <div class="step-label">✦ AI Tavsiyalari</div>
-        <h2>Sizga mos destinatsiyalar</h2>
-      </div>
-      <div class="dest-list" id="destList"></div>
-      <div class="ai-advice" id="aiAdvice"></div>
-      <button class="btn-restart" onclick="restart()">↺ Qaytadan boshlash</button>
-    </div>
-
-  </div><!-- /card -->
-</div><!-- /card-wrapper -->
+  <div id="quizArea"></div>
+</div>
 
 <script>
-const state = {
-  interests: [],
-  climate: null,
-  budget: 1500,
-  duration: null
-};
-
-let currentStep = 1;
-
-function goStep(n) {
-  document.getElementById('step-' + currentStep)?.classList.remove('active');
-  document.getElementById('step-' + n)?.classList.add('active');
-  currentStep = n;
-  // progress: steps 1-4 => 20-80%
-  document.getElementById('progressFill').style.width = (n * 20) + '%';
-}
-
-function showRaw(id) {
-  document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
-}
-
-// ---- Multi-select interests ----
-document.querySelectorAll('#interests-grid .option-btn').forEach(btn => {
-  btn.addEventListener('click', () => {
-    btn.classList.toggle('selected');
-    const val = btn.dataset.val;
-    if (btn.classList.contains('selected')) {
-      state.interests.push(val);
-    } else {
-      state.interests = state.interests.filter(v => v !== val);
-    }
-    document.getElementById('next1').disabled = state.interests.length === 0;
-  });
-});
-
-// ---- Single-select climate ----
-document.querySelectorAll('#climate-grid .option-btn').forEach(btn => {
-  btn.addEventListener('click', () => {
-    document.querySelectorAll('#climate-grid .option-btn').forEach(b => b.classList.remove('selected'));
-    btn.classList.add('selected');
-    state.climate = btn.dataset.val;
-    document.getElementById('next2').disabled = false;
-  });
-});
-
-// ---- Single-select duration ----
-document.querySelectorAll('#duration-grid .option-btn').forEach(btn => {
-  btn.addEventListener('click', () => {
-    document.querySelectorAll('#duration-grid .option-btn').forEach(b => b.classList.remove('selected'));
-    btn.classList.add('selected');
-    state.duration = btn.dataset.val;
-    document.getElementById('next4').disabled = false;
-  });
-});
-
-// ---- Budget slider ----
-function updateBudget(val) {
-  state.budget = parseInt(val);
-  document.getElementById('budgetDisplay').textContent = '$' + parseInt(val).toLocaleString();
-}
-
-// ---- Restart ----
-function restart() {
-  state.interests = [];
-  state.climate = null;
-  state.budget = 1500;
-  state.duration = null;
-  document.querySelectorAll('.option-btn').forEach(b => b.classList.remove('selected'));
-  document.getElementById('budgetSlider').value = 1500;
-  document.getElementById('budgetDisplay').textContent = '$1,500';
-  document.getElementById('next1').disabled = true;
-  document.getElementById('next2').disabled = true;
-  document.getElementById('next4').disabled = true;
-  document.getElementById('errorBox').style.display = 'none';
-  // Hide all steps, show step 1
-  document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
-  document.getElementById('step-1').classList.add('active');
-  document.getElementById('progressFill').style.width = '20%';
-  currentStep = 1;
-}
-
-// ---- Labels ----
-const interestLabels = {
-  beaches:'Plyajlar', mountains:"Tog'lar", history:'Tarix', nature:'Tabiat',
-  food:'Taom', shopping:'Xarid', adventure:'Sarguzasht', culture:'Madaniyat', relax:'Dam olish'
-};
-const climateLabels = {
-  tropical:'Issiq & Nam', mediterranean:'Iliq & Quruq', cold:'Sovuq & Qorli',
-  mild:"Mo'tadil", desert:"Cho'l", any:'Farq qilmaydi'
-};
-const durationLabels = { weekend:'2–3 kun', week:'1 hafta', twoweeks:'2 hafta', month:'1 oy+' };
-
-// ---- Main AI call ----
-async function getRecommendations() {
-  document.getElementById('errorBox').style.display = 'none';
-
-  const interests = state.interests.map(i => interestLabels[i] || i).join(', ');
-  const climate = climateLabels[state.climate] || state.climate;
-  const duration = durationLabels[state.duration] || state.duration;
-  const budget = '$' + state.budget.toLocaleString();
-
-  // Show loading
-  document.getElementById('step-4').classList.remove('active');
-  showRaw('step-loading');
-  document.getElementById('progressFill').style.width = '90%';
-
-  const prompt = `Foydalanuvchi quyidagi ma'lumotlarni berdi:
-- Qiziqishlar: ${interests}
-- Iqlim: ${climate}
-- Byudjet (1 kishi): ${budget}
-- Sayohat muddati: ${duration}
-
-Siz tajribali sayohat maslahatchiсиз. Ushbu ma'lumotlar asosida 3 ta eng mos destinatsiyani tavsiya qiling.
-
-Javobni FAQAT quyidagi JSON formatida bering, boshqa hech narsa yozmang:
-{
-  "destinations": [
+// ============================================================
+// DECISION TREE
+// ============================================================
+const tree = {
+  id: "start",
+  question: "Sayohatdan asosiy maqsadingiz nima?",
+  stepLabel: "Maqsad",
+  sub: "Eng ko'p mos kelganini tanlang",
+  options: [
     {
-      "name": "Shahar nomi, Mamlakat",
-      "emoji": "bir emoji bu joyni ifodalovchi",
-      "description": "2-3 jumlali qisqa tavsif (o'zbek tilida)",
-      "tags": ["tag1", "tag2", "tag3"]
+      icon: "🏖️", label: "Dam olish & Plyaj",
+      desc: "Dengiz, qum, quyosh",
+      next: {
+        id: "beach_budget",
+        question: "Byudjetingiz qanday?",
+        stepLabel: "Byudjet",
+        sub: "Bir kishi uchun taxminiy xarajat",
+        options: [
+          {
+            icon: "💸", label: "Arzon ($ 500 gacha)",
+            desc: "Tejamliroq variant",
+            next: {
+              id: "beach_cheap_dur",
+              question: "Necha kun sayohat qilmoqchisiz?",
+              stepLabel: "Muddat",
+              sub: "",
+              options: [
+                { icon: "🌙", label: "3–5 kun", desc: "", result: "bali_budget" },
+                { icon: "📅", label: "1 hafta+", desc: "", result: "georgia_tbilisi" }
+              ]
+            }
+          },
+          {
+            icon: "💰", label: "O'rta ($500–2000)",
+            desc: "Qulay va sifatli",
+            next: {
+              id: "beach_mid_pref",
+              question: "Qanday muhitni yoqtirasiz?",
+              stepLabel: "Muhit",
+              sub: "",
+              options: [
+                { icon: "🌴", label: "Tropik o'rmon & Dengiz", desc: "Yashil, egzotik", result: "thailand_phuket" },
+                { icon: "🏛️", label: "Tarix & Madaniyat ham bo'lsin", desc: "Ikki xil zavq", result: "croatia_split" }
+              ]
+            }
+          },
+          {
+            icon: "💎", label: "Yuqori ($2000+)",
+            desc: "Hashamatli sayohat",
+            next: {
+              id: "beach_lux_where",
+              question: "Qaysi yo'nalish qiziqtiradi?",
+              stepLabel: "Yo'nalish",
+              sub: "",
+              options: [
+                { icon: "🌊", label: "Hind okeani", desc: "Egzotik orollar", result: "maldives" },
+                { icon: "🌅", label: "O'rta er dengizi", desc: "Yevropacha uslub", result: "santorini" }
+              ]
+            }
+          }
+        ]
+      }
     },
-    ...
-  ],
-  "advice": "Qisqa va foydali umumiy maslahat ushbu foydalanuvchi uchun (2-3 jumla, o'zbek tilida)"
-}`;
-
-  try {
-    const resp = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
-        max_tokens: 1000,
-        messages: [{ role: 'user', content: prompt }]
-      })
-    });
-
-    if (!resp.ok) {
-      throw new Error('API xatosi: ' + resp.status);
+    {
+      icon: "🏔️", label: "Tog' & Tabiat",
+      desc: "Hiking, manzaralar, havo",
+      next: {
+        id: "nature_type",
+        question: "Tabiat qanday bo'lsin?",
+        stepLabel: "Tabiat turi",
+        sub: "",
+        options: [
+          {
+            icon: "🌲", label: "Yashil tog'lar & O'rmonlar",
+            desc: "Yam-yashil manzaralar",
+            next: {
+              id: "green_who",
+              question: "Kim bilan borasiz?",
+              stepLabel: "Hamroh",
+              sub: "",
+              options: [
+                { icon: "👫", label: "Juft/Romantik", desc: "", result: "switzerland_interlaken" },
+                { icon: "👨‍👩‍👧", label: "Oila bilan", desc: "", result: "georgia_kazbegi" },
+                { icon: "🎒", label: "Yolg'iz/Do'stlar", desc: "", result: "kyrgyzstan" }
+              ]
+            }
+          },
+          {
+            icon: "🏜️", label: "Cho'l & Sahro",
+            desc: "Keng maydon, tinch osmon",
+            next: {
+              id: "desert_exp",
+              question: "Sarguzasht darajasi?",
+              stepLabel: "Daraja",
+              sub: "",
+              options: [
+                { icon: "🧘", label: "Tinch, qulay", desc: "Lager va ekskursiya", result: "morocco_sahara" },
+                { icon: "🏕️", label: "Jiddiy sarguzasht", desc: "Trekking va camping", result: "jordan_wadi" }
+              ]
+            }
+          },
+          {
+            icon: "❄️", label: "Qor & Muzliklar",
+            desc: "Qishki manzaralar",
+            next: {
+              id: "snow_act",
+              question: "Qaysi faoliyat?",
+              stepLabel: "Faoliyat",
+              sub: "",
+              options: [
+                { icon: "⛷️", label: "Ski & Snowboard", desc: "", result: "austria_ski" },
+                { icon: "📸", label: "Manzara & Foto", desc: "", result: "iceland" }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      icon: "🏛️", label: "Tarix & Madaniyat",
+      desc: "Muzeylar, qal'alar, an'analar",
+      next: {
+        id: "culture_region",
+        question: "Qaysi sivilizatsiya qiziqtiradi?",
+        stepLabel: "Sivilizatsiya",
+        sub: "",
+        options: [
+          {
+            icon: "🏺", label: "Qadimgi Sharq",
+            desc: "Misr, Mesopotamiya, Fors",
+            next: {
+              id: "east_country",
+              question: "Qaysi mamlakat?",
+              stepLabel: "Mamlakat",
+              sub: "",
+              options: [
+                { icon: "🔺", label: "Misr — Piramidalar", desc: "Qohira, Luxor", result: "egypt" },
+                { icon: "🌹", label: "Eron — Forsiy shahzodalar", desc: "Isfahan, Shiraz", result: "iran_isfahan" },
+                { icon: "🏯", label: "O'zbekiston — Ipak yo'li", desc: "Samarqand, Buxoro", result: "uzbekistan_silk" }
+              ]
+            }
+          },
+          {
+            icon: "⚡", label: "Yevropacha Klassika",
+            desc: "Rim, Gretsiya, Ispaniya",
+            next: {
+              id: "euro_style",
+              question: "Qaysi uslub?",
+              stepLabel: "Uslub",
+              sub: "",
+              options: [
+                { icon: "🍕", label: "Italiya — San'at va taom", desc: "Rim, Florensiya", result: "italy_rome" },
+                { icon: "🏛️", label: "Gretsiya — Qadimgi afsonalar", desc: "Afina, Rodos", result: "greece_athens" },
+                { icon: "🦁", label: "Ispaniya — Hayotiylik", desc: "Barselona, Madrid", result: "spain_barcelona" }
+              ]
+            }
+          },
+          {
+            icon: "🌏", label: "Sharqiy Osiyo",
+            desc: "Yaponiya, Xitoy, Tailand",
+            next: {
+              id: "asia_pick",
+              question: "Qaysi?",
+              stepLabel: "Mamlakat",
+              sub: "",
+              options: [
+                { icon: "⛩️", label: "Yaponiya — An'ana va zamonaviylik", desc: "Tokio, Kioto", result: "japan_kyoto" },
+                { icon: "🐉", label: "Xitoy — Buyuk Devor", desc: "Pekin, Shanhay", result: "china_beijing" },
+                { icon: "🛕", label: "Kambodja — Angkor Vat", desc: "Qadimgi ibodatxonalar", result: "cambodia" }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      icon: "🍜", label: "Gastronomiya & Shahar",
+      desc: "Restoran, bozor, nightlife",
+      next: {
+        id: "food_region",
+        question: "Qaysi oshxona yoqtirасиз?",
+        stepLabel: "Oshxona",
+        sub: "",
+        options: [
+          {
+            icon: "🥘", label: "O'rta er dengizi",
+            desc: "Olivka, dengiz mahsuloti, sharab",
+            next: {
+              id: "med_food_city",
+              question: "Qaysi shahar?",
+              stepLabel: "Shahar",
+              sub: "",
+              options: [
+                { icon: "🇹🇷", label: "Istanbul — Ikki dunyo chorrahasida", desc: "", result: "istanbul" },
+                { icon: "🇵🇹", label: "Lissabon — Dengiz va nostalgiya", desc: "", result: "lisbon" },
+                { icon: "🇲🇦", label: "Marrakesh — Aralash xil-xil ta'mlar", desc: "", result: "marrakech" }
+              ]
+            }
+          },
+          {
+            icon: "🍣", label: "Osiyo",
+            desc: "Umami, ziravorlar, ko'cha taomlari",
+            next: {
+              id: "asia_food_city",
+              question: "Qaysi?",
+              stepLabel: "Shahar",
+              sub: "",
+              options: [
+                { icon: "🍜", label: "Bangkok — Ko'cha taomlari shohi", desc: "", result: "bangkok" },
+                { icon: "🍱", label: "Tokio — Dunyo poytaxti oshxona", desc: "", result: "tokyo_food" },
+                { icon: "🌶️", label: "Mexico City — Rangbarang ta'mlar", desc: "", result: "mexico_city" }
+              ]
+            }
+          },
+          {
+            icon: "☕", label: "Zamonaviy Kafе Madaniyati",
+            desc: "Specialty coffee, hipster muhit",
+            next: {
+              id: "cafe_budget",
+              question: "Byudjetingiz?",
+              stepLabel: "Byudjet",
+              sub: "",
+              options: [
+                { icon: "💸", label: "Qulay narx", desc: "", result: "tbilisi_cafe" },
+                { icon: "💰", label: "O'rta", desc: "", result: "amsterdam" },
+                { icon: "💎", label: "Premium", desc: "", result: "copenhagen" }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      icon: "🎒", label: "Sarguzasht & Ekstremal",
+      desc: "Adrenalin, bungee, rafting",
+      next: {
+        id: "adv_type",
+        question: "Qaysi sarguzasht turi?",
+        stepLabel: "Tur",
+        sub: "",
+        options: [
+          {
+            icon: "🌊", label: "Suv sporti",
+            desc: "Surf, dalg'a, rafting",
+            next: {
+              id: "water_sport",
+              question: "Qaysi daraja?",
+              stepLabel: "Daraja",
+              sub: "",
+              options: [
+                { icon: "🏄", label: "Surfing boshlang'ich", desc: "", result: "portugal_surf" },
+                { icon: "🌊", label: "Jiddiy rafting & kayak", desc: "", result: "nepal_rafting" }
+              ]
+            }
+          },
+          {
+            icon: "🧗", label: "Tog' alpinizmi",
+            desc: "Trekking, alpinizm",
+            next: {
+              id: "trek_level",
+              question: "Tajriba darajasi?",
+              stepLabel: "Tajriba",
+              sub: "",
+              options: [
+                { icon: "🥾", label: "Boshlang'ich trekking", desc: "", result: "kyrgyzstan" },
+                { icon: "🏔️", label: "Murakkab marshrut", desc: "", result: "nepal_everest" }
+              ]
+            }
+          },
+          {
+            icon: "🦁", label: "Safari & Yovvoyi tabiat",
+            desc: "Hayvonlar, savanna",
+            result: "kenya_safari"
+          }
+        ]
+      }
     }
+  ]
+};
 
-    const data = await resp.json();
-    const text = data.content.map(b => b.text || '').join('');
+// ============================================================
+// RESULTS DATABASE
+// ============================================================
+const results = {
+  bali_budget: {
+    emoji: "🌺", name: "Bali, Indoneziya", subtitle: "Xudolar oroli",
+    desc: "Bali arzon va ajoyib plyajlar, yashil sholi dalalari va buddist ibodatxonalar uyg'unligi. Kuta, Seminyak va Ubud — har biri o'ziga xos dunyo.",
+    info: { season: "May–Oktyabr", budget: "$300–500 / hafta", stay: "5–7 kun", visa: "Vizasiz (30 kun)" },
+    tips: ["Ubud bozorida savdo qilishni unutmang", "Ertalab 6da Tirta Empul ibodatxonasiga boring — odamsiz", "Nusa Penida oroliga bir kunlik sayohat ajoyib", "Motosikl ijaraga oling — eng qulay transport"],
+    alts: ["🇹🇭 Koh Samui, Tailand", "🇵🇭 Boracay, Filippin", "🇱🇰 Mirissa, Shri Lanka"]
+  },
+  georgia_tbilisi: {
+    emoji: "🍷", name: "Tbilisi, Gruziya", subtitle: "Sharq va G'arb uyg'unligi",
+    desc: "Tbilisi — arzon, go'zal va boy tarixi bilan qiziqarli. Ko'hna shahar, issiq suv manbalari, dunyodagi eng qadimiy vinolar va mehribon xalq.",
+    info: { season: "Aprel–Iyun, Sentyabr–Oktyabr", budget: "$400–700 / hafta", stay: "5–10 kun", visa: "Vizasiz (1 yil)" },
+    tips: ["Narikala qal'asiga yurib chiqing — manzara ajoyib", "Sulfur hammomlarini (Abanotubani) sinab ko'ring", "Borjomi va Bakuriani — yon safar sifatida", "Lari juda arzon — naqd pul olib yuring"],
+    alts: ["🇦🇲 Yerevan, Armaniston", "🇦🇿 Boku, Ozarbayjon", "🇷🇸 Belgrad, Serbiya"]
+  },
+  thailand_phuket: {
+    emoji: "🌴", name: "Phuket, Tailand", subtitle: "Janub-Sharqiy Osiyoning marvaridi",
+    desc: "Kristall tiniq dengiz, qumli qo'ltiqlar, yashil o'rmonlar va Patong ning jonli nightlife. Phuket har xil turistga mos keladi.",
+    info: { season: "Noyabr–Aprel", budget: "$700–1500 / hafta", stay: "7–14 kun", visa: "Vizasiz (30 kun)" },
+    tips: ["Phi Phi orollariga bir kunlik sayohat qiling", "Sirinat milliy bog'ini ko'ring", "Patong ko'p shovqinli — Kata yoki Kamala yanada tinch", "Tuk-tuk narxini oldindan kelishib oling"],
+    alts: ["🇮🇩 Lombok, Indoneziya", "🇻🇳 Da Nang, Vyetnam", "🇲🇾 Langkawi, Malayziya"]
+  },
+  croatia_split: {
+    emoji: "🏛️", name: "Split, Xorvatiya", subtitle: "Rim qal'asi ichida shahar",
+    desc: "Diokletian saroyi ichida yashovchi shahar — butun dunyo bo'yicha noyob. Adriatika dengizining moviy suvi, orollar va O'rta er dengizi taomlari.",
+    info: { season: "Iyun–Sentyabr", budget: "$800–1600 / hafta", stay: "7–10 kun", visa: "Shengen" },
+    tips: ["Hvar va Brach orollariga feri bilan boring", "Shahar ichida piyoda yuring — hammasi yaqin", "Pazar maydonida nonushta qiling", "Oktyabrda narxlar 30% tushadi"],
+    alts: ["🇲🇪 Kotor, Chernogoriya", "🇬🇷 Nafplio, Gretsiya", "🇲🇹 Valletta, Malta"]
+  },
+  maldives: {
+    emoji: "🏝️", name: "Maldiv orollari", subtitle: "Dunyo jannat",
+    desc: "Suv usti bungalolarida uyqu, shaffof dengiz, korallar va dengiz hayotining mo'jizasi. Yer yuzidagi eng romantik joy.",
+    info: { season: "Yanvar–Aprel", budget: "$3000–8000 / hafta", stay: "7–10 kun", visa: "Kelishda bepul viza" },
+    tips: ["All-inclusive resort tanlang — transport qimmat", "Snorkeling uchun alohida ekskursiya buyurtma qiling", "Male shahriga kelganda miqyosni his qilasiz", "Baliq va dengiz mahsulotlari restoranini sinang"],
+    alts: ["🇸🇨 Seyshel orollari", "🇫🇯 Fiji", "🇵🇫 Bora Bora, Fransuz Polineziyasi"]
+  },
+  santorini: {
+    emoji: "🌅", name: "Santorini, Gretsiya", subtitle: "Moviy gumbazlar va qizil kechki shafaq",
+    desc: "Oq-moviy binolar, vulkanik qoyalar, apelsin vinosi va Oia ning dunyo mashhur botishi. Romantik sayohat uchun ideal.",
+    info: { season: "Aprel–Oktyabr", budget: "$2000–4000 / hafta", stay: "5–7 kun", visa: "Shengen" },
+    tips: ["Oia dan botishni ko'rish uchun 1 soat oldin joyni band qiling", "Fira dan Oia ga piyoda yurish (2 soat) ajoyib", "Akrotiri arxeologik qazilmalarini ko'ring", "Iyul–Avgust eng shovqinli — Iyun afzalroq"],
+    alts: ["🇮🇹 Amalfi sohili, Italiya", "🇫🇷 Korsika oroli, Fransiya", "🇪🇸 Formentera, Ispaniya"]
+  },
+  switzerland_interlaken: {
+    emoji: "🏔️", name: "Interlaken, Shveytsariya", subtitle: "Ko'llar orasidagi tog' shahri",
+    desc: "Brienz va Thun ko'llari orasida joylashgan Interlaken — Eiger, Mönch va Jungfrau tog'lari fonida romantik sayohat uchun ideal joy.",
+    info: { season: "Iyun–Sentyabr, Dekabr–Mart", budget: "$1500–3000 / hafta", stay: "5–7 kun", visa: "Shengen" },
+    tips: ["Jungfraujoch ('Yevropa tom') ga qator chipta oldindan soating", "Grindelwald dan piyoda marshrutlar bepul", "Shveytsariya poezdlari vaqtinchalik chipta bilan arzon", "Fondue va raclette — majburiy tatib ko'rish"],
+    alts: ["🇦🇹 Hallstatt, Avstriya", "🇳🇴 Flom, Norvegiya", "🇸🇮 Bled ko'li, Sloveniya"]
+  },
+  georgia_kazbegi: {
+    emoji: "⛪", name: "Kazbegi, Gruziya", subtitle: "Gergeti va muzlik qo'ynida",
+    desc: "Gergeti Trinity cherkoviga boradigan marshrut — dunyodagi eng ta'sirli tog' ko'rinishlaridan biri. Bolalar va oila uchun ham qulay.",
+    info: { season: "Mayl–Oktyabr", budget: "$300–600 / hafta", stay: "3–5 kun", visa: "Vizasiz" },
+    tips: ["Tbilisidan marshrutka bor — $5 ga", "Cherkovgacha yurish 2 soat yoki jeep $20", "Stepantsminda da mehmonxonalar oddiy lekin issiq", "Araqitani ham tatib ko'ring — mahalliy chacha"],
+    alts: ["🇰🇬 Son-Ko'l, Qirg'iziston", "🇹🇯 Pamirskiy trakt, Tojikiston", "🇦🇲 Dilijan, Armaniston"]
+  },
+  kyrgyzstan: {
+    emoji: "🏕️", name: "Qirg'iziston", subtitle: "Ko'chmanchilar yurtida",
+    desc: "Son-Ko'l, Ala-Archa, Karakol — Markaziy Osiyoning eng go'zal tog' manzaralari. Yurt (o'tov) da tunash, ot minish, haqiqiy tabiat.",
+    info: { season: "Iyun–Sentyabr", budget: "$400–700 / hafta", stay: "7–14 kun", visa: "Vizasiz (30 kun)" },
+    tips: ["Bishkekdan avtobus va taksi orqali hamma joyga borasiz", "Yurt camp da bir tun albatta qoling", "Manty va beshbarmaq — milliy taomlarni sinang", "Dollar ayirboshlash uchun shahar markaziga boring"],
+    alts: ["🇰🇿 Almati, Qozog'iston", "🇹🇯 Iskandarkul, Tojikiston", "🇲🇳 Mongoliя cho'llari"]
+  },
+  morocco_sahara: {
+    emoji: "🐪", name: "Sahara, Marokash", subtitle: "Qizil qumtepaliklar va yulduzli osmon",
+    desc: "Merzouga qumtepaliklarida tuyaga minish, berber lagerida tunash va hayotda bir marta ko'riladigan yulduzli osmon. Marrakeshdan 8 soat yo'l.",
+    info: { season: "Oktyabr–Aprel", budget: "$600–1200 / hafta", stay: "3–5 kun Sahara + 7 kun jami", visa: "Vizasiz (90 kun)" },
+    tips: ["Marrakesh–Fes marshrutu davomida Sahara orqali o'ting", "Lager tanlashda reviews ni diqqat o'qing", "Kecha sovuq bo'ladi — issiq kiyim oling", "Fes medina si — dunyo BO'YICHA eng katta yayov shahar"],
+    alts: ["🇹🇳 Tunisiya cho'li", "🇯🇴 Vadi Ram, Iordaniya", "🇦🇪 Dubai cho'l safarilari"]
+  },
+  jordan_wadi: {
+    emoji: "🏜️", name: "Vadi Ram, Iordaniya", subtitle: "Mars sirt — Yer yuzida",
+    desc: "Qizil tosh qoyalar, keng ochiq cho'l va Mars ining rangi. Petra shahriga ham yaqin — ikkalasini birga ko'ring.",
+    info: { season: "Mart–May, Sentyabr–Noyabr", budget: "$700–1400 / hafta", stay: "5–7 kun", visa: "Kelishda viza $40" },
+    tips: ["Jordan Pass soting — Petra kirishni ham o'z ichiga oladi", "Vadi Ram da 1 tun camping majburiy", "Petra da erta tongda boring — odamsiz va soya bor", "Aqaba dengiz kurortiga 1 kun ajrating"],
+    alts: ["🇸🇦 Al-Ula, Saudiya Arabistoni", "🇮🇱 Negev cho'li, Isroil", "🇶🇦 Katar cho'l safari"]
+  },
+  austria_ski: {
+    emoji: "⛷️", name: "Avstriya — Alp tog'lari", subtitle: "Ski poytaxti",
+    desc: "Kitzbühel, Zell am See, Ischgl — Yevropa ning eng yaxshi ski kurortlari. Qorli qiyaliklar, gemütlich kafeler va apres-ski.",
+    info: { season: "Dekabr–Mart", budget: "$1500–3500 / hafta", stay: "7 kun", visa: "Shengen" },
+    tips: ["Ski pass ni oldindan onlayn oling — 20% arzon", "Ischgl aprеs-ski uchun mashhur", "Kitzbühel eski shahar ko'rinishi bilan ajralib turadi", "Haftalik paketlar (uy+lift) ajratib olish arzon"],
+    alts: ["🇫🇷 Chamonix, Fransiya", "🇨🇭 Verbier, Shveytsariya", "🇮🇹 Cortina, Italiya"]
+  },
+  iceland: {
+    emoji: "🌌", name: "Islandiya", subtitle: "Shimoliy chiroqlar va muzliklar",
+    desc: "Aurora Borealis, geyzerlar, qora qumli plyajlar, sharsharalar va muzliklar — tabiatning eng shiddatli namoyishi bir orolda.",
+    info: { season: "Sentyabr–Mart (aurora), Iyun–Avgust (quyosh)", budget: "$1500–3000 / hafta", stay: "7–10 kun", visa: "Shengen" },
+    tips: ["Ring Road bo'ylab aylanish — 10 kun eng yaxshisi", "Aurora ni ko'rish uchun qorong'u va bulut yo'q kerak", "Reykjavik dan arenda mashin — transport eng qulay", "Geothermal havzalar (Blue Lagoon) oldindan buyurtma"],
+    alts: ["🇳🇴 Tromsø, Norvegiya", "🇫🇮 Rovaniemi, Finlandiya", "🇨🇦 Yukon, Kanada"]
+  },
+  egypt: {
+    emoji: "🔺", name: "Misr — Qohira & Luxor", subtitle: "Faronlar yurtiga xush kelibsiz",
+    desc: "Giza piramidалари, Sfinks, Luxor ibodatxonalari, Nil daryosi bo'ylab kruiz va Qizil dengiz — barchasi bir mamlakatda.",
+    info: { season: "Oktyabr–Aprel", budget: "$600–1400 / hafta", stay: "7–14 kun", visa: "Kelishda viza $25" },
+    tips: ["Piramidaga erta tong (8da) boring — soya va suratlar yaxshi", "Nil kruizi Luxor–Asuan — 3–4 kun ideal", "Dahab sholbo'yida snorkeling juda arzon", "Gid bilan ekskursiya borganingda ko'proq bilib olasiz"],
+    alts: ["🇯🇴 Petra, Iordaniya", "🇹🇳 Karfagen, Tunis", "🇸🇩 Meroe piramidалари, Sudan"]
+  },
+  iran_isfahan: {
+    emoji: "🕌", name: "Isfahan, Eron", subtitle: "Dunyoning yarmi — Forsiy maqol",
+    desc: "Naqsh-e Jahan maydoni — YUNESKO ro'yxatidagi ajoyib me'moriy majmua. Ko'k kafel mozaikalar, ko'priklar va hozirgi kunda eng mehribon xalq.",
+    info: { season: "Aprel–May, Sentyabr–Oktyabr", budget: "$400–800 / hafta", stay: "7–10 kun", visa: "Viza oldindan yoki kelishda" },
+    tips: ["Naqsh-e Jahan kechqurun yoritilganda suratlari eng chiroyli", "Gashtak ko'prigi ostida kechki piyoda sayr qiling", "Chay (chai) do'konlarida o'tirib suhbat qiling", "Teherondan poezdda borish mumkin"],
+    alts: ["🇹🇷 Konya, Turkiya", "🇸🇦 Al-Ula, Saudiya", "🇦🇿 Sheki, Ozarbayjon"]
+  },
+  uzbekistan_silk: {
+    emoji: "🕌", name: "O'zbekiston — Ipak yo'li", subtitle: "Samarqand, Buxoro, Xiva",
+    desc: "Registon maydoni, Ko'k gumbazlar, qadimiy karvonsaroylar — Ipak yo'lining markazida yashagan buyuk sivilizatsiya izlari.",
+    info: { season: "Aprel–Iyun, Sentyabr–Noyabr", budget: "$300–700 / hafta", stay: "7–14 kun", visa: "Ko'p mamlakatlar uchun vizasiz" },
+    tips: ["Samarqand–Buxoro–Xiva marshrutini ketma-ket bosing", "Registon ni kechki yorug'likda ko'ring", "Plov, samsa va non — majburiy tatib ko'rish", "Poezdlar tez va arzon — aviabilet shart emas"],
+    alts: ["🇹🇯 Dushanbe, Tojikiston", "🇹🇲 Ashxobod, Turkmaniston", "🇰🇿 Turkiston, Qozog'iston"]
+  },
+  italy_rome: {
+    emoji: "🍕", name: "Italiya — Rim & Florensiya", subtitle: "Uyg'onish davri va Qadimiy imperiya",
+    desc: "Kolizey, Vatican, Trevi favvorasi, Davud haykali, Uffizi galereyasi — G'arb sivilizatsiyasining ildizi.",
+    info: { season: "Aprel–Iyun, Sentyabr–Oktyabr", budget: "$1000–2500 / hafta", stay: "7–14 kun", visa: "Shengen" },
+    tips: ["Vatican chipta ni oldindan onlayn band qiling", "Rim da piyoda yurish — hamma joylar yaqin", "Trastevere da kechki ovqat — mahalliycha", "Florensiyadan Siena va San Gimignano yon safarlari"],
+    alts: ["🇬🇷 Afina, Gretsiya", "🇵🇹 Lissabon, Portugaliya", "🇪🇸 Sevilla, Ispaniya"]
+  },
+  greece_athens: {
+    emoji: "🏛️", name: "Afina, Gretsiya", subtitle: "Demokratiya va falsafaning vatani",
+    desc: "Akropol, Parfenon, Arxeologiya muzeyi va juda mazali meze — bularni ko'rmasdan Yevropani bilmasiz.",
+    info: { season: "Aprel–Iyun, Sentyabr–Oktyabr", budget: "$700–1500 / hafta", stay: "5–7 kun", visa: "Shengen" },
+    tips: ["Akropolga erta tong boring — 8:00 da ochildi", "Monastiraki bazori — ko'rish va did qilish uchun", "Paros yoki Naxos orollariga ferry — 2 soat", "Psarotaverna da yangi tutilgan baliq yeng"],
+    alts: ["🇹🇷 Istanbul, Turkiya", "🇷🇴 Buxarest, Ruminiya", "🇲🇰 Ohrid, Shimoliy Makedoniya"]
+  },
+  spain_barcelona: {
+    emoji: "🦁", name: "Barselona, Ispaniya", subtitle: "Gaudí, dengiz va passion",
+    desc: "Sagrada Familia, Park Güell, La Boqueria bozori, Gothic kvartal va Barceloneta plyaji — hayot go'zal deganda Barselona ko'z oldingizga keladi.",
+    info: { season: "Aprel–Iyun, Sentyabr–Oktyabr", budget: "$1000–2000 / hafta", stay: "5–7 kun", visa: "Shengen" },
+    tips: ["Sagrada Familia chipta ni oldindan oling — navbat uzun", "Tapas kechasi: El Born kvartalida piyoda aylanib yengin", "Metro juda qulay — 10 trip karta arzon", "Flamenko shou ni haqiqiy joyda ko'ring"],
+    alts: ["🇵🇹 Porto, Portugaliya", "🇫🇷 Marsel, Fransiya", "🇮🇹 Napoli, Italiya"]
+  },
+  japan_kyoto: {
+    emoji: "⛩️", name: "Kioto, Yaponiya", subtitle: "Ming ibodatxona shahri",
+    desc: "Fushimi Inari ming qizil torii, Arashiyama bambuk o'rmoni, geyshalar yuradigan Gion kvartali — Yaponiyaning ruhi.",
+    info: { season: "Mart–May (sakura), Oktyabr–Noyabr (bargli)", budget: "$1500–3000 / hafta", stay: "7–14 kun", visa: "Vizasiz (90 kun)" },
+    tips: ["Fushimi Inari ga erta tong (6–7) boring — suratlar uchun", "JR Pass 7 kunlik oling — arzon transport", "Ryokan da bir tun qoling — an'anaviy tajriba", "Nishiki bozorida tamaki, wagashi, dashi tatib ko'ring"],
+    alts: ["🇰🇷 Seul, Koreya", "🇹🇼 Tayvan, Tayvan", "🇻🇳 Hoi An, Vyetnam"]
+  },
+  china_beijing: {
+    emoji: "🐉", name: "Pekin, Xitoy", subtitle: "Imperiya poytaxtida",
+    desc: "Buyuk Xitoy devori, Taqiqlangan shahar, Osmon ibodatxonasi va Hutong ko'chalari — ming yillik imperiya tarixi bir shaharda.",
+    info: { season: "Aprel–May, Sentyabr–Oktyabr", budget: "$800–1800 / hafta", stay: "7–10 kun", visa: "Viza kerak" },
+    tips: ["Mutianyu devori bo'limiga boring — kam odamli", "Hutong da velosiped turing", "VPN ni bormasdan oldin o'rnating — Google ishlamaydi", "Pekin go'sht piroqlari (jiaozi) — tunda ham ishlaydi"],
+    alts: ["🇨🇳 Shanhay, Xitoy", "🇨🇳 Chengdu (pandalar), Xitoy", "🇭🇰 Gonkong"]
+  },
+  cambodia: {
+    emoji: "🛕", name: "Kambodja — Angkor Vat", subtitle: "O'rmonda yashiringan imperiya",
+    desc: "Angkor Vat — dunyodagi eng katta diniy ibodatxona majmuasi. Ta Prohm (Lara Kroft filmi) daraxt ildizlari bilan qoplangan qoyatosh binolar.",
+    info: { season: "Noyabr–Mart", budget: "$400–900 / hafta", stay: "5–7 kun", visa: "Kelishda viza $30" },
+    tips: ["3 kunlik Angkor pass oling — hammasiga yetadi", "Erta tong (5:30) Angkor Vat da quyosh chiqishini kuting", "Tuk-tuk haydovchi bir kun uchun $15–20 — to'g'ri kelishib oling", "Siem Reap bozorida kechki ovqat arzon"],
+    alts: ["🇻🇳 Hoi An, Vyetnam", "🇲🇲 Bagan, Myanma", "🇹🇭 Chiang Mai, Tailand"]
+  },
+  istanbul: {
+    emoji: "🕌", name: "Istanbul, Turkiya", subtitle: "Ikki qit'a orasidagi shahar",
+    desc: "Sulaymoniya masjidi, Ayasofia, Qapali bozor, Bosfor kemasi — Sharq va G'arbning eng go'zal uyg'unligi.",
+    info: { season: "Aprel–May, Sentyabr–Noyabr", budget: "$500–1200 / hafta", stay: "5–7 kun", visa: "E-viza yoki vizasiz" },
+    tips: ["Bosfor bo'ylab kema sayohati — $2 ga", "Qapali bozorda birinchi narx ohirgi emas — savdo qiling", "Baliqli non Eminonu ko'prigida — majburiy", "Anadolu tomoniga (Kadıköy) bir kun boring — mahalliycha"],
+    alts: ["🇬🇷 Afina, Gretsiya", "🇧🇬 Sofiya, Bolgariya", "🇷🇴 Buxarest, Ruminiya"]
+  },
+  lisbon: {
+    emoji: "🎶", name: "Lissabon, Portugaliya", subtitle: "Fado va dengiz shamoli",
+    desc: "Tram 28, Alfama kvartalining tor ko'chalari, Jeronimos monastiri, Belem minorasi va dunyo eng yaxshi tuzlangan baliqlar shahri.",
+    info: { season: "Mart–Iyun, Sentyabr–Noyabr", budget: "$700–1500 / hafta", stay: "5–7 kun", visa: "Shengen" },
+    tips: ["Tram 28 ni ertalab 8da ushlang — navbatsiz", "Alfamada fado kechasi haqiqiy tajriba", "Sintra — 40 daqiqa poezdda, sehrli qasrlar", "Pasteis de nata — non do'konida issiq yengin"],
+    alts: ["🇵🇹 Porto, Portugaliya", "🇪🇸 Sevilla, Ispaniya", "🇲🇦 Kasablanka, Marokash"]
+  },
+  marrakech: {
+    emoji: "🌹", name: "Marrakesh, Marokash", subtitle: "Qizil shahar — Sharqiy sehrli dunyo",
+    desc: "Djemaa el-Fna maydoni, zarbiya (gilam) bozori, Majorel bog'i va hammom tajribasi — hisslarni to'ldiradigan shahar.",
+    info: { season: "Mart–May, Sentyabr–Noyabr", budget: "$500–1200 / hafta", stay: "5–7 kun", visa: "Vizasiz (90 kun)" },
+    tips: ["Medina ichida yo'qolish — maqsadli", "Hammom (hammam) tajribasini sinang", "Tajine va bastilla — majburiy taomlar", "Essaouira ga bir kunlik yon safar qiling"],
+    alts: ["🇹🇳 Tunis medina si", "🇩🇿 Algir, Jazoir", "🇪🇬 Qohira, Misr"]
+  },
+  bangkok: {
+    emoji: "🍜", name: "Bangkok, Tailand", subtitle: "Ko'cha taomlari va oltin ibodatxonalar",
+    desc: "Tuk-tuklar, suzib yuradigan bozorlar, Wat Pho, Chatuchak va kechasi bir koshinak pad thai — Bangkok chakana sayohatchi uchun jannat.",
+    info: { season: "Noyabr–Mart", budget: "$400–900 / hafta", stay: "5–10 kun", visa: "Vizasiz (30 kun)" },
+    tips: ["BTS Skytrain va MRT metro — qulay va arzon", "Khao San Road dan uzoqda qoling — Silom yaxshiroq", "Ko'cha taom Silom Soi 20 da", "Chao Phraya bo'ylab kema transport — $1 ga"],
+    alts: ["🇻🇳 Xo'shiminshaxr, Vyetnam", "🇸🇬 Singapur", "🇲🇾 Kuala Lumpur, Malayziya"]
+  },
+  tokyo_food: {
+    emoji: "🍱", name: "Tokio, Yaponiya", subtitle: "Dunyo oshxonasi poytaxti",
+    desc: "Tsukiji bozori, ramen ko'chalari, omakase sushi, yakitori izakayas, matcha desertlari — Tokio gastronomik dunyo rekordini ushlaydi.",
+    info: { season: "Mart–May, Oktyabr–Noyabr", budget: "$1500–3000 / hafta", stay: "7–10 kun", visa: "Vizasiz (90 kun)" },
+    tips: ["Depachika (universal do'kon osti) — gourmet jannat", "Ichiban-boshi yoki Fuunji da ramen iste'mol qiling", "Sumo turniri bo'lsa — albatta borib tomoshalang", "IC Card (Pasmo/Suica) oling — hamma transportda"],
+    alts: ["🇰🇷 Seul, Koreya", "🇸🇬 Singapur", "🇭🇰 Gonkong"]
+  },
+  mexico_city: {
+    emoji: "🌮", name: "Mexico City, Meksika", subtitle: "Azteklar poytaxti — zamonaviy kaos",
+    desc: "Teotihuacan piramidалари, Frida Kahlo muzeyi, Xochimilco suzuvchi bog'lar, taco al pastor va meksikalik murakkab mole.",
+    info: { season: "Noyabr–Aprel", budget: "$600–1300 / hafta", stay: "7–10 kun", visa: "Vizasiz (180 kun)" },
+    tips: ["Coyoacan va Roma Norte — eng cool mahallalar", "Uber Meksikada xavfsiz va arzon", "Museo Nacional de Antropología — majburiy ko'rish", "Taco al pastor — ko'cha taomidan boshqa narsa emas"],
+    alts: ["🇨🇴 Kartagena, Kolumbiya", "🇵🇪 Lima, Peru", "🇦🇷 Buenos Ayres, Argentina"]
+  },
+  tbilisi_cafe: {
+    emoji: "☕", name: "Tbilisi, Gruziya", subtitle: "Kavkaz ning trendy coffee shahri",
+    desc: "Marjanishvili va Vera rayonlarida specialty coffee do'konlari gullab-yashnaydi. Arzon, chiroyli va mehribon shahar.",
+    info: { season: "Aprel–Noyabr", budget: "$300–600 / hafta", stay: "5–7 kun", visa: "Vizasiz (1 yil)" },
+    tips: ["Fabrika — ko'p maqsadli madaniy markaz, yangi mahalla", "Marjanishvili ko'chasida piyoda aylanish", "Gvino (gruzin sharob) degustation borish", "Sulfur hammomlarini sinab ko'ring"],
+    alts: ["🇦🇲 Yerevan, Armaniston", "🇷🇸 Belgrad, Serbiya", "🇧🇦 Sarajevo, Bosniya"]
+  },
+  amsterdam: {
+    emoji: "🚲", name: "Amsterdam, Niderlandiya", subtitle: "Kanallar va velosipedlar shahri",
+    desc: "Rembrandt, Van Gogh, Anne Frank uyi, rang-barang tulip dalalari va specialty coffee shop madaniyati — Yevropaning eng liberal shahri.",
+    info: { season: "Aprel–Iyun, Sentyabr–Noyabr", budget: "$1200–2500 / hafta", stay: "5–7 kun", visa: "Shengen" },
+    tips: ["Velosiped ijaraga oling — shaharni ko'rish uchun eng yaxshi", "Rijksmuseum chipta ni oldindan soating", "Keukenhof bog'i aprelda — tulipanlar gullagan payt", "Ертаlabki bozorlar — Waterlooplein"],
+    alts: ["🇧🇪 Bryugge, Belgiya", "🇩🇰 Kopengagen, Daniya", "🇸🇪 Stokgolm, Shvetsiya"]
+  },
+  copenhagen: {
+    emoji: "🧆", name: "Kopengagen, Daniya", subtitle: "Noma va hygge madaniyati",
+    desc: "Noma restoran, Tivoli bog'i, Nyhavn ko'prigi, dizayn do'konlari — hashamatli minimalizm va dunyoning eng yaxshi restorani.",
+    info: { season: "May–Sentyabr", budget: "$2000–4000 / hafta", stay: "5–7 kun", visa: "Shengen" },
+    tips: ["Noma uchun 3 oy oldin bron qiling", "Nyhavn da rasmga tushishni unutmang", "Velosiped — ko'pchilik yuradi", "Smørrebrød (ochiq buterbrod) — milliy taom"],
+    alts: ["🇸🇪 Stokgolm, Shvetsiya", "🇫🇮 Xelsinki, Finlandiya", "🇳🇴 Bergen, Norvegiya"]
+  },
+  portugal_surf: {
+    emoji: "🏄", name: "Peniche, Portugaliya", subtitle: "Yevropaning surf poytaxti",
+    desc: "Supertubos to'lqinlari — dunyo chempionatining asosiy sahnasi. Boshlang'ichlar uchun ham ajoyib surf maktablari mavjud.",
+    info: { season: "Sentyabr–Noyabr, Mart–May", budget: "$600–1200 / hafta", stay: "7–14 kun", visa: "Shengen" },
+    tips: ["Surf dars 1 hafta kursi $200–300 — narx/sifat ajoyib", "Nazaré — dunyo eng baland to'lqinlari (kuzda)", "Lissabondan 1.5 soat mashina", "Pousada da qolish — qulay va arzon"],
+    alts: ["🇫🇷 Biarritz, Fransiya", "🇪🇸 Playa de Las Canteras, Ispaniya", "🇲🇦 Taghazout, Marokash"]
+  },
+  nepal_rafting: {
+    emoji: "🌊", name: "Nepal — Trisuli daryo raftingi", subtitle: "Himalay etaklarida adrenalin",
+    desc: "Trisuli, Bhote Koshi va Karnali daryolarida dunyo darajasidagi rafting. Katmandu va Pokharadan osongina borish mumkin.",
+    info: { season: "Oktyabr–Noyabr, Mart–May", budget: "$500–1200 / hafta", stay: "7–14 kun", visa: "Kelishda viza $30–50" },
+    tips: ["Bhote Koshi — eng qiyin (Grade 4–5)", "Trisuli — boshlang'ich uchun (Grade 3)", "Pokhara da paragliding ham qo'shing", "Pashupatinath ibodatxonasini Katmanduda ko'ring"],
+    alts: ["🇳🇵 Nepal trekking", "🇮🇳 Rishikesh raftingi, Hindiston", "🇿🇦 Zambezi, Zimbabwe"]
+  },
+  nepal_everest: {
+    emoji: "🏔️", name: "Everest Base Camp, Nepal", subtitle: "Dunyo tomiga yurish",
+    desc: "Lukla dan Namche Bazaar, Tengboche monastiri va 5364 m balandlikdagi EBC — hayotdagi eng epik trekking tajriba.",
+    info: { season: "Oktyabr–Noyabr, Mart–May", budget: "$1500–3000 / hafta", stay: "14–21 kun", visa: "Kelishda viza $30–50" },
+    tips: ["Jismoniy tayyorgarlik 3 oy oldin boshlang", "Altitude sickness haqida bilim oling", "Teahouse da qolish — gid tutish majburiy emas", "Lukla ga alohida charter reys"],
+    alts: ["🇵🇰 K2 Base Camp, Pokiston", "🇵🇪 Inca Trail, Peru", "🇹🇿 Kilimanjaro, Tanzaniya"]
+  },
+  kenya_safari: {
+    emoji: "🦁", name: "Kenya Safari", subtitle: "Savannada Buyuk Ko'chish",
+    desc: "Masai Mara da katta beshalik (fil, sherNM, leopard, buyvol, karkidon), havodan balon safari va Maasai qabilasi bilan uchrashув.",
+    info: { season: "Iyul–Oktyabr (ko'chish), Yanvar–Mart", budget: "$2000–5000 / hafta", stay: "7–14 kun", visa: "Kelishda viza $50" },
+    tips: ["Game drive uchun erta tong (6:00) yaxshiroq", "Balon safari ($500) — hayotda bir marta", "Amboseli — Kilimanjaro fonida fillar", "Zanzibar (Tanzaniya) ga kengaytiring — dengiz + safari"],
+    alts: ["🇹🇿 Serengeti, Tanzaniya", "🇿🇦 Kruger, Janubiy Afrika", "🇧🇼 Okavango delta, Botsvana"]
+  }
+};
 
-    // Parse JSON — strip possible markdown fences
-    const clean = text.replace(/```json|```/g, '').trim();
-    const parsed = JSON.parse(clean);
+// ============================================================
+// STATE
+// ============================================================
+let history = []; // stack of nodes
+let currentNode = tree;
+let totalSteps = 0;
+let currentStep = 0;
 
-    renderResults(parsed);
+function countDepth(node) {
+  if (node.result) return 1;
+  if (!node.options) return 1;
+  return 1 + Math.max(...node.options.map(o => countDepth(o.next || { result: true })));
+}
 
-  } catch (err) {
-    // If API fails, show error on step 4
-    showRaw('step-4');
-    document.getElementById('step-4').classList.add('active');
-    document.getElementById('progressFill').style.width = '80%';
-    const box = document.getElementById('errorBox');
-    box.style.display = 'block';
-    box.textContent = '⚠️ Xatolik yuz berdi: ' + err.message + '. Iltimos qaytadan urinib ko\'ring.';
-    currentStep = 4;
+// ============================================================
+// RENDER
+// ============================================================
+function buildProgressTrack() {
+  const track = document.getElementById('progressTrack');
+  track.innerHTML = '';
+  const maxSteps = 5;
+  for (let i = 0; i < maxSteps; i++) {
+    if (i > 0) {
+      const line = document.createElement('div');
+      line.className = 'progress-line' + (i <= currentStep ? ' filled' : '');
+      track.appendChild(line);
+    }
+    const dot = document.createElement('div');
+    dot.className = 'progress-dot' + (i < currentStep ? ' done' : i === currentStep ? ' active' : '');
+    track.appendChild(dot);
   }
 }
 
-function renderResults(data) {
-  document.getElementById('progressFill').style.width = '100%';
+function renderQuestion(node) {
+  buildProgressTrack();
+  const area = document.getElementById('quizArea');
+  area.innerHTML = '';
 
-  // Build destination cards
-  const list = document.getElementById('destList');
-  list.innerHTML = '';
-  data.destinations.forEach((dest, i) => {
-    const tagsHtml = (dest.tags || []).map(t => `<span class="dest-tag">${t}</span>`).join('');
-    list.innerHTML += `
-      <div class="dest-card">
-        <div class="dest-rank">${i + 1}</div>
-        <div class="dest-info">
-          <h3>${dest.emoji || '✈️'} ${dest.name}</h3>
-          <p>${dest.description}</p>
-          <div class="dest-tags">${tagsHtml}</div>
-        </div>
-      </div>`;
+  const card = document.createElement('div');
+  card.className = 'q-card';
+
+  // Header
+  const hdr = document.createElement('div');
+  hdr.className = 'q-header';
+  hdr.innerHTML = `
+    <div class="q-step-label">${node.stepLabel || 'Savol'}</div>
+    <div class="q-title">${node.question}</div>
+    ${node.sub ? `<div class="q-sub">${node.sub}</div>` : ''}
+  `;
+  card.appendChild(hdr);
+
+  // Options
+  const opts = document.createElement('div');
+  opts.className = 'q-options';
+
+  node.options.forEach(opt => {
+    const btn = document.createElement('button');
+    btn.className = 'opt-btn';
+    btn.innerHTML = `
+      <span class="opt-icon">${opt.icon}</span>
+      <span class="opt-text">
+        <span class="opt-label">${opt.label}</span>
+        ${opt.desc ? `<span class="opt-desc">${opt.desc}</span>` : ''}
+      </span>
+      <span class="opt-arrow">›</span>
+    `;
+    btn.addEventListener('click', () => choose(opt));
+    opts.appendChild(btn);
   });
 
-  // AI advice
-  document.getElementById('aiAdvice').innerHTML =
-    '<strong>🧭 AI maslahati:</strong> ' + (data.advice || '');
+  card.appendChild(opts);
 
-  showRaw('step-result');
+  // Footer
+  if (history.length > 0) {
+    const footer = document.createElement('div');
+    footer.className = 'q-footer';
+    footer.innerHTML = `<button class="btn-back" onclick="goBack()">← Orqaga</button>`;
+    card.appendChild(footer);
+  }
+
+  area.appendChild(card);
 }
+
+function choose(opt) {
+  history.push(currentNode);
+  currentStep = Math.min(currentStep + 1, 4);
+
+  if (opt.result) {
+    renderResult(opt.result);
+  } else if (opt.next) {
+    currentNode = opt.next;
+    renderQuestion(currentNode);
+  }
+}
+
+function goBack() {
+  if (history.length === 0) return;
+  currentNode = history.pop();
+  currentStep = Math.max(currentStep - 1, 0);
+  renderQuestion(currentNode);
+}
+
+// ============================================================
+// RESULT
+// ============================================================
+function renderResult(key) {
+  buildProgressTrack();
+  const r = results[key];
+  if (!r) {
+    document.getElementById('quizArea').innerHTML = '<p style="color:red">Natija topilmadi: ' + key + '</p>';
+    return;
+  }
+
+  const area = document.getElementById('quizArea');
+  area.innerHTML = '';
+
+  const card = document.createElement('div');
+  card.className = 'result-card';
+
+  card.innerHTML = `
+    <div class="result-hero">
+      <div class="result-badge">✦ Sizga mos joy topildi</div>
+      <span class="result-emoji">${r.emoji}</span>
+      <div class="result-title">${r.name}</div>
+      <div class="result-subtitle">${r.subtitle}</div>
+      <div class="result-desc">${r.desc}</div>
+    </div>
+
+    <div class="result-grid">
+      <div class="info-item">
+        <span class="info-icon">📅</span>
+        <span class="info-label">Eng yaxshi mavsum</span>
+        <span class="info-value">${r.info.season}</span>
+      </div>
+      <div class="info-item">
+        <span class="info-icon">💰</span>
+        <span class="info-label">Byudjet</span>
+        <span class="info-value">${r.info.budget}</span>
+      </div>
+      <div class="info-item">
+        <span class="info-icon">🏨</span>
+        <span class="info-label">Tavsiya qilinadigan muddat</span>
+        <span class="info-value">${r.info.stay}</span>
+      </div>
+      <div class="info-item">
+        <span class="info-icon">🛂</span>
+        <span class="info-label">Viza</span>
+        <span class="info-value">${r.info.visa}</span>
+      </div>
+    </div>
+
+    <div class="result-tips">
+      <div class="tips-title">Muhim maslahatlar</div>
+      ${r.tips.map(t => `<div class="tip-item"><div class="tip-dot"></div>${t}</div>`).join('')}
+    </div>
+
+    <div class="result-alts">
+      <div class="alts-title">Muqobil variantlar</div>
+      <div class="alts-row">
+        ${r.alts.map(a => `<span class="alt-chip">${a}</span>`).join('')}
+      </div>
+      <button class="btn-restart" onclick="restart()">↺ Qaytadan boshlash</button>
+    </div>
+  `;
+
+  area.appendChild(card);
+}
+
+function restart() {
+  history = [];
+  currentNode = tree;
+  currentStep = 0;
+  renderQuestion(currentNode);
+}
+
+// ============================================================
+// INIT
+// ============================================================
+renderQuestion(currentNode);
 </script>
 </body>
 </html>
